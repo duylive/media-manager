@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "1f5f15a6-4fcb-48db-ac6f-36b1a1243bae",
+		"name": "Media Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Collection",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/collections",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"collections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/collections/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"collections",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"New Collection\",\n\t\"description\":\"New collection description\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/collections",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"collections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"New Collection update\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/collections/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"collections",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/collections/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"collections",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"url\":\"\",\n\t\"collection\":\"\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attach to collection",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"collection\":\"new-collection-1\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias/1/collection/attach",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias",
+								"1",
+								"collection",
+								"attach"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detach from collection",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/media-manager/medias/1/collection/detach",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"media-manager",
+								"medias",
+								"1",
+								"collection",
+								"detach"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "upload_path",
+							"value": "uploads",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/file/upload",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"file",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload S3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "upload_path",
+							"value": "uploads",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/v2/file/upload/s3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"file",
+						"upload",
+						"s3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

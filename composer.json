@@ -1,0 +1,26 @@
+{
+    "name": "webpress/media-manager",
+    "authors": [
+        {
+            "name": "sonhaichu",
+            "email": "sonhaichu@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "VCComponent\\Laravel\\MediaManager\\": "src"
+        }
+    },
+    "require": {
+        "spatie/laravel-medialibrary": "7.0.6",
+        "webpress/core": "0.0.1"
+    },
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VCComponent\\Laravel\\MediaManager\\MediaManagerProvider"
+            ]
+        }
+    }
+}
