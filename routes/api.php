@@ -19,6 +19,7 @@ $api->version('v1', function ($api) use ($namespace) {
         $api->get('medias/all', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@all');
         $api->put('medias/{id}/collection/attach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@attachToCollection');
         $api->put('medias/{id}/collection/detach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@detachFromCollection');
+        $api->post('medias/bulk', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@createMedias');
         $api->resource('medias', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController');
     });
 });

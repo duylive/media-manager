@@ -25,6 +25,7 @@ class MediaTransformer extends TransformerAbstract
             'mime_type'       => $model->mime_type,
             'disk'            => $model->disk,
             'size'            => $model->size,
+            'alt_img'         => $model->alt_img,
             'order'           => $model->order_column,
             'original_url'    => $model->getFullUrl(),
             'thumb_url'       => $model->getFullUrl('thumb'),
