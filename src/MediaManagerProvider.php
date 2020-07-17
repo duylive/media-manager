@@ -30,20 +30,15 @@ class MediaManagerProvider extends ServiceProvider
      */
     public function boot()
     {
-        Relation::morphMap([
-            'media' => MediaItem::class,
-        ]);
-
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->publishes([
             __DIR__ . '/../config/vc-media-manager.php' => config_path('vc-media-manager.php'),
         ], 'config');
 
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_collections_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_collections_table.php'),
-        ], 'migrations');
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_media_items_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_media_items_table.php'),
-        ], 'migrations');
+        Relation::morphMap([
+            'media' => MediaItem::class,
+        ]);
+
     }
 }
