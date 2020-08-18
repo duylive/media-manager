@@ -3,25 +3,26 @@
 namespace VCComponent\Laravel\MediaManager;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\File;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\Conversion\Conversion;
-use Spatie\MediaLibrary\Events\CollectionHasBeenCleared;
-use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\InvalidBase64Data;
-use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
-use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\UnreachableUrl;
-use Spatie\MediaLibrary\Exceptions\MediaCannotBeDeleted;
-use Spatie\MediaLibrary\Exceptions\MediaCannotBeUpdated;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
-use Spatie\MediaLibrary\FileAdder\FileAdderFactory;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\MediaCollection\MediaCollection;
+use Spatie\MediaLibrary\Conversions\Conversion;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Events\CollectionHasBeenCleared as EventsCollectionHasBeenCleared;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeUpdated;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
+use Spatie\MediaLibrary\MediaCollections\FileAdder;
+use Spatie\MediaLibrary\MediaCollections\FileAdderFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\MediaRepository;
-use Spatie\MediaLibrary\Models\Media;
 use VCComponent\Laravel\MediaManager\Entities\MediaItem;
 
 trait HasMediaTrait
@@ -60,7 +61,7 @@ trait HasMediaTrait
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(config('medialibrary.media_model'), 'model');
     }
@@ -72,7 +73,7 @@ trait HasMediaTrait
      *
      * @return \Spatie\MediaLibrary\FileAdder\FileAdder
      */
-    public function addMedia($file)
+    public function addMedia($file): FileAdder
     {
         return app(FileAdderFactory::class)->create($this, $file);
     }
@@ -200,7 +201,7 @@ trait HasMediaTrait
      *
      * @return \Spatie\MediaLibrary\FileAdder\FileAdder
      */
-    public function copyMedia($file)
+    public function copyMedia($file): FileAdder
     {
         return $this->addMedia($file)->preservingOriginal();
     }
@@ -226,7 +227,7 @@ trait HasMediaTrait
         return app(MediaRepository::class)->getCollection($this, $collectionName, $filters);
     }
 
-    public function getFirstMedia(string $collectionName = 'default', array $filters = []):  ? Media
+    public function getFirstMedia(string $collectionName = 'default', array $filters = []): ?Media
     {
         $media = $this->getMedia($collectionName, $filters);
 
@@ -238,7 +239,7 @@ trait HasMediaTrait
      * for first media for the given collectionName.
      * If no profile is given, return the source's url.
      */
-    public function getFirstMediaUrl(string $collectionName = 'default', string $conversionName = '') : string
+    public function getFirstMediaUrl(string $collectionName = 'default', string $conversionName = ''): string
     {
         $media = $this->getFirstMedia($collectionName);
 
@@ -266,7 +267,7 @@ trait HasMediaTrait
         return $media->getTemporaryUrl($expiration, $conversionName);
     }
 
-    public function getMediaCollection(string $collectionName = 'default'):  ? MediaCollection
+    public function getMediaCollection(string $collectionName = 'default'): ?MediaCollection
     {
         $this->registerMediaCollections();
 
@@ -281,7 +282,7 @@ trait HasMediaTrait
         return optional($this->getMediaCollection($collectionName))->fallbackUrl;
     }
 
-    public function getFallbackMediaPath(string $collectionName = 'default') : string
+    public function getFallbackMediaPath(string $collectionName = 'default'): string
     {
         return optional($this->getMediaCollection($collectionName))->fallbackPath;
     }
@@ -367,7 +368,7 @@ trait HasMediaTrait
         $this->getMedia($collectionName)
             ->each->delete();
 
-        event(new CollectionHasBeenCleared($this, $collectionName));
+        event(new EventsCollectionHasBeenCleared($this, $collectionName));
 
         if ($this->mediaIsPreloaded()) {
             unset($this->media);
@@ -384,7 +385,7 @@ trait HasMediaTrait
      *
      * @return $this
      */
-    public function clearMediaCollectionExcept(string $collectionName = 'default', $excludedMedia = [])
+    public function clearMediaCollectionExcept(string $collectionName = 'default', $excludedMedia = []): self
     {
         if ($excludedMedia instanceof Media) {
             $excludedMedia = collect()->push($excludedMedia);
@@ -407,7 +408,7 @@ trait HasMediaTrait
         }
 
         if ($this->getMedia($collectionName)->isEmpty()) {
-            event(new CollectionHasBeenCleared($this, $collectionName));
+            event(new EventsCollectionHasBeenCleared($this, $collectionName));
         }
 
         return $this;
@@ -474,7 +475,7 @@ trait HasMediaTrait
      *
      * @return bool
      */
-    public function shouldDeletePreservingMedia()
+    public function shouldDeletePreservingMedia(): bool
     {
         return $this->deletePreservingMedia ?? false;
     }
@@ -541,7 +542,7 @@ trait HasMediaTrait
         }
     }
 
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(config('vc-media-manager.thumb_size.width'))
@@ -549,11 +550,11 @@ trait HasMediaTrait
             ->sharpen(10);
     }
 
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
     }
 
-    public function registerAllMediaConversions(Media $media = null)
+    public function registerAllMediaConversions(Media $media = null): void
     {
         $this->registerMediaCollections();
 

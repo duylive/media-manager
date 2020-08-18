@@ -74,6 +74,7 @@ class MediaController extends ApiController
     }
     public function createMedias(Request $request)
     {
+
         $urls       = $request->input('urls');
         $collection = $request->has('collection') ? $request->input('collection') : null;
 

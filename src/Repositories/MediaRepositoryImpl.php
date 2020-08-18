@@ -46,9 +46,12 @@ class MediaRepositoryImpl extends BaseRepository implements MediaRepository
     {
         $collection = $collection ? $collection : 'default';
         $medias = [];
+
         foreach ($urls as $url) {
             $media_item = MediaItem::create(['url' => $url['url']]);
+
             $media = $media_item->addMediaFromUrl($url['url'])->toMediaCollection($collection);
+
             $media->alt_img = $url['alt'];
             $media->save();
             array_push($medias, $media);

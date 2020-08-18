@@ -2,7 +2,7 @@
 
 namespace VCComponent\Laravel\MediaManager\Entities;
 
-use Spatie\MediaLibrary\Models\Media as BaseMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 use VCComponent\Laravel\MediaManager\Entities\Collection;
 
 class Media extends BaseMedia
