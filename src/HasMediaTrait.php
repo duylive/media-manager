@@ -3,26 +3,25 @@
 namespace VCComponent\Laravel\MediaManager;
 
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\File;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\Conversions\Conversion;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Events\CollectionHasBeenCleared as EventsCollectionHasBeenCleared;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidBase64Data;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeDeleted;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MediaCannotBeUpdated;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\MimeTypeNotAllowed;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
-use Spatie\MediaLibrary\MediaCollections\FileAdder;
-use Spatie\MediaLibrary\MediaCollections\FileAdderFactory;
-use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\Conversion\Conversion;
+use Spatie\MediaLibrary\Events\CollectionHasBeenCleared;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\InvalidBase64Data;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\MimeTypeNotAllowed;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\UnreachableUrl;
+use Spatie\MediaLibrary\Exceptions\MediaCannotBeDeleted;
+use Spatie\MediaLibrary\Exceptions\MediaCannotBeUpdated;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
+use Spatie\MediaLibrary\FileAdder\FileAdderFactory;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\MediaCollection\MediaCollection;
 use Spatie\MediaLibrary\MediaRepository;
+use Spatie\MediaLibrary\Models\Media;
 use VCComponent\Laravel\MediaManager\Entities\MediaItem;
 
 trait HasMediaTrait
@@ -61,7 +60,7 @@ trait HasMediaTrait
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function media(): MorphMany
+    public function media()
     {
         return $this->morphMany(config('medialibrary.media_model'), 'model');
     }
@@ -73,7 +72,7 @@ trait HasMediaTrait
      *
      * @return \Spatie\MediaLibrary\FileAdder\FileAdder
      */
-    public function addMedia($file): FileAdder
+    public function addMedia($file)
     {
         return app(FileAdderFactory::class)->create($this, $file);
     }
@@ -201,7 +200,7 @@ trait HasMediaTrait
      *
      * @return \Spatie\MediaLibrary\FileAdder\FileAdder
      */
-    public function copyMedia($file): FileAdder
+    public function copyMedia($file)
     {
         return $this->addMedia($file)->preservingOriginal();
     }
@@ -227,7 +226,7 @@ trait HasMediaTrait
         return app(MediaRepository::class)->getCollection($this, $collectionName, $filters);
     }
 
-    public function getFirstMedia(string $collectionName = 'default', array $filters = []): ?Media
+    public function getFirstMedia(string $collectionName = 'default', array $filters = []): ? Media
     {
         $media = $this->getMedia($collectionName, $filters);
 
@@ -368,7 +367,7 @@ trait HasMediaTrait
         $this->getMedia($collectionName)
             ->each->delete();
 
-        event(new EventsCollectionHasBeenCleared($this, $collectionName));
+        event(new CollectionHasBeenCleared($this, $collectionName));
 
         if ($this->mediaIsPreloaded()) {
             unset($this->media);
@@ -475,7 +474,7 @@ trait HasMediaTrait
      *
      * @return bool
      */
-    public function shouldDeletePreservingMedia(): bool
+    public function shouldDeletePreservingMedia()
     {
         return $this->deletePreservingMedia ?? false;
     }
@@ -542,7 +541,7 @@ trait HasMediaTrait
         }
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')
             ->width(config('vc-media-manager.thumb_size.width'))
@@ -550,11 +549,11 @@ trait HasMediaTrait
             ->sharpen(10);
     }
 
-    public function registerMediaCollections(): void
+    public function registerMediaCollections()
     {
     }
 
-    public function registerAllMediaConversions(Media $media = null): void
+    public function registerAllMediaConversions(Media $media = null)
     {
         $this->registerMediaCollections();
 
