@@ -5,6 +5,7 @@
   - [Composer](#composer)
   - [Config and Migration](#config-and-migration)
   - [Environment](#environment)
+  - [Config](#config)
 - [Configuration](#configuration)
   - [URL Namespace](#url-namespace)
 - [APIs List](#apis-list)
@@ -72,7 +73,7 @@ Generate `JWT_SECRET` in `.env`file.
 php artisan jwt:secret
 ```
 
-##Config
+## Config
 
 In `config/filesystems`, add `'media'` in `'disk'` to create link and storage folder when you add images :
 
