@@ -72,11 +72,22 @@ Generate `JWT_SECRET` in `.env`file.
 php artisan jwt:secret
 ```
 
-Run the following command:
+##Config
+
+In `config/filesystems`, add `'media'` in `'disk'` to create link and storage folder when you add images :
 
 ```
-php artisan storage:link
+'disks' => [
+ ...
+ 'media' => [
+           'url' => env('APP_URL') . '/uploads/media',
+           'driver' => 'local',
+           'root' => public_path('uploads/media'),
+         ],
+ ],
 ```
+
+In `.env`, add `MEDIA_DISK="media"` to use configuration of `'media'` in `'disks'`.
 
 Now the package is ready to use.
 
@@ -109,14 +120,14 @@ Here is the list of APIs provided by the package.
 | PUT    | `/api/{namespace}/collections/{id}`              | Update collection                      |
 | DELETE | `/api/{namespace}/collections/{id}`              | Delete collection                      |
 | ------ | ------                                           | ------                                 |
-| GET    | `/api/{namespace}/medias`                        | Get list of collection with pagination |
-| GET    | `/api/{namespace}/medias/all`                    | Get all medias                         |
-| GET    | `/api/{namespace}/medias/{id}`                   | Get collection item                    |
-| POST   | `/api/{namespace}/medias`                        | Create collection                      |
-| PUT    | `/api/{namespace}/medias/{id}`                   | Update collection                      |
-| DELETE | `/api/{namespace}/medias/{id}`                   | Delete collection                      |
-| PUT    | `/api/{namespace}/medias/{id}/collection/attach` | Attach media to collection             |
-| PUT    | `/api/{namespace}/medias/{id}/collection/detach` | Detach media from collection           |
+| GET    | `/api/{namespace}/media`                         | Get list of collection with pagination |
+| GET    | `/api/{namespace}/media/all`                     | Get all medias                         |
+| GET    | `/api/{namespace}/media/{id}`                    | Get collection item                    |
+| POST   | `/api/{namespace}/media`                         | Create collection                      |
+| PUT    | `/api/{namespace}/media/{id}`                    | Update collection                      |
+| DELETE | `/api/{namespace}/media/{id}`                    | Delete collection                      |
+| PUT    | `/api/{namespace}/media/{id}/collection/attach`  | Attach media to collection             |
+| PUT    | `/api/{namespace}/media/{id}/collection/detach`  | Detach media from collection           |
 
 # Prepare your model
 
