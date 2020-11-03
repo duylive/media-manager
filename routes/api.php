@@ -14,12 +14,11 @@ $api->version('v1', function ($api) use ($namespace) {
         //Collection
         $api->get('collections/all', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\CollectionController@all');
         $api->resource('collections', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\CollectionController');
-
         //Media
-        $api->get('medias/all', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@all');
-        $api->put('medias/{id}/collection/attach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@attachToCollection');
-        $api->put('medias/{id}/collection/detach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@detachFromCollection');
-        $api->post('medias/bulk', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@createMedias');
-        $api->resource('medias', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController');
+        $api->get('media/all', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@all');
+        $api->put('media/{id}/collection/attach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@attachToCollection');
+        $api->put('media/{id}/collection/detach', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@detachFromCollection');
+        $api->post('media/bulk', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController@createMedias');
+        $api->resource('media', 'VCComponent\Laravel\MediaManager\Http\Controllers\Api\MediaController');
     });
 });
