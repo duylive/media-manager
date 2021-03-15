@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use VCComponent\Laravel\MediaManager\Repositories\Contracts\CollectionRepository;
 use VCComponent\Laravel\MediaManager\Transformers\CollectionTransformer;
 use VCComponent\Laravel\Vicoders\Core\Controllers\ApiController;
+use VCComponent\Laravel\MediaManager\Facades\Collection;
 
 class CollectionController extends ApiController
 {
@@ -98,5 +99,18 @@ class CollectionController extends ApiController
         $this->repository->deleteById($id);
 
         return $this->success();
+    }
+
+    public function getCollectionName(Request $request, $name)
+    {
+        $collectionName = Collection::get_collection_name($name);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->item($collectionName, $transformer);
     }
 }

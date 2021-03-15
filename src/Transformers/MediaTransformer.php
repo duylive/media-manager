@@ -30,8 +30,8 @@ class MediaTransformer extends TransformerAbstract
             'original_url'    => $model->getFullUrl(),
             'thumb_url'       => $model->getFullUrl('thumb'),
             'timestamps'      => [
-                'created_at' => $model->created_at,
-                'updated_at' => $model->updated_at,
+                'created_at'  => $model->created_at,
+                'updated_at'  => $model->updated_at,
             ],
         ];
     }

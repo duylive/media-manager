@@ -4,6 +4,8 @@ namespace VCComponent\Laravel\MediaManager;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use VCComponent\Laravel\MediaManager\Services\Collection;
+use VCComponent\Laravel\MediaManager\Services\Media;
 use VCComponent\Laravel\MediaManager\Entities\MediaItem;
 use VCComponent\Laravel\MediaManager\Repositories\CollectionRepositoryImpl;
 use VCComponent\Laravel\MediaManager\Repositories\Contracts\CollectionRepository;
@@ -21,6 +23,8 @@ class MediaManagerProvider extends ServiceProvider
     {
         $this->app->bind(CollectionRepository::class, CollectionRepositoryImpl::class);
         $this->app->bind(MediaRepository::class, MediaRepositoryImpl::class);
+        $this->app->bind("media", Media::class);
+        $this->app->bind("collection", Collection::class);
     }
 
     /**

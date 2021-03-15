@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use VCComponent\Laravel\MediaManager\Repositories\Contracts\MediaRepository;
 use VCComponent\Laravel\MediaManager\Transformers\MediaTransformer;
 use VCComponent\Laravel\Vicoders\Core\Controllers\ApiController;
+use VCComponent\Laravel\MediaManager\Facades\Media;
 
 class MediaController extends ApiController
 {
@@ -110,5 +111,70 @@ class MediaController extends ApiController
     {
         $media = $this->repository->updateCollection($id, 'default');
         return $this->response->item($media, new $this->transformer());
+    }
+
+    public function getMediaModelId(Request $request, $model_id)
+    {
+        $getMediaModelId = Media::get_media_id($model_id);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->collection($getMediaModelId, $transformer);
+    }
+
+    public function getMediaModelType(Request $request, $model_type)
+    {
+        $getMediaModelType = Media::get_media_type($model_type);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->collection($getMediaModelType, $transformer);
+    }
+
+    public function getMediaCollectionName(Request $request, $collection_name)
+    {
+        $getMediaCollectionName = Media::get_media_collection_name($collection_name);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->collection($getMediaCollectionName, $transformer);
+    }
+
+    public function getAllMediaCollectionById(Request $request, $model_id, $collection_name)
+    {
+        $getAllMediaCollectionById = Media::get_all_media_in_collection_by_id($model_id, $collection_name);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->collection($getAllMediaCollectionById, $transformer);
+    }
+
+    public function getAllMediaCollectionByType(Request $request, $model_type, $collection_name)
+    {
+        $getAllMediaCollectionByType = Media::get_all_media_in_collection_by_type($model_type, $collection_name);
+
+        if ($request->has('includes')) {
+            $transformer = new $this->transformer($request->get('includes'));
+        } else {
+            $transformer = new $this->transformer();
+        }
+
+        return $this->response->collection($getAllMediaCollectionByType, $transformer);
     }
 }
